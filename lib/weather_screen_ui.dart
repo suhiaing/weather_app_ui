@@ -1,6 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'dart:ui';
+import 'hourly_forcast_item.dart';
 
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
@@ -23,9 +23,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(100, 20, 100, 0),
         //main column
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               //wrap with sizebox coz we want to give it width
@@ -50,20 +51,19 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     child: const Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
                             '300.06K',
                             style: TextStyle(
-                              fontSize: 32,
+                              fontSize: 28,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 16),
                           Icon(
                             Icons.cloud,
                             size: 64,
                           ),
-                          SizedBox(height: 16),
                           Text(
                             'Rain',
                             style: TextStyle(
@@ -80,44 +80,41 @@ class _WeatherScreenState extends State<WeatherScreen> {
             const SizedBox(
               height: 20,
             ),
-            Card(
-              elevation: 10,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16)),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          Container(
-                            color: Colors.white70,
-                            width: 50,
-                            height: 100,
-                          ),
-                          Container(
-                            color: Colors.white70,
-                            width: 50,
-                            height: 100,
-                          ),
-                          Container(
-                            color: Colors.white70,
-                            width: 50,
-                            height: 100,
-                          ),
-                        ],
-                      ),
-                    )),
+            const Text(
+              "Weather Forecast",
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  HourlyForcastItem(),
+                  HourlyForcastItem(),
+                  HourlyForcastItem(),
+                  HourlyForcastItem(),
+                  HourlyForcastItem(),
+                  HourlyForcastItem(),
+                  HourlyForcastItem(),
+                  HourlyForcastItem(),
+                  HourlyForcastItem(),
+                  HourlyForcastItem(),
+                ],
               ),
             ),
             const SizedBox(
               height: 20,
             ),
-            const Placeholder(
-              fallbackHeight: 100,
-            )
+            const Text(
+              "Additional Information",
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const LastWidget()
           ],
         ),
       ),
