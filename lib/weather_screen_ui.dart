@@ -115,7 +115,23 @@ class _WeatherScreenState extends State<WeatherScreen> {
             const SizedBox(
               height: 20,
             ),
-            const AdditionalInfo()
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                AdditionalInfo(
+                    icon: Icons.water_drop_outlined,
+                    label: "Humdity",
+                    value: "91"),
+                AdditionalInfo(
+                    icon: Icons.wind_power_sharp,
+                    label: "Wind Speed",
+                    value: "19.8"),
+                AdditionalInfo(
+                    icon: Icons.water_drop_outlined,
+                    label: "Pressure",
+                    value: "1006"),
+              ],
+            )
           ],
         ),
       ),
