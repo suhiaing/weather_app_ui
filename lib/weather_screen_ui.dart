@@ -61,9 +61,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+                          SizedBox(
+                            height: 15,
+                          ),
                           Icon(
                             Icons.cloud,
                             size: 64,
+                          ),
+                          SizedBox(
+                            height: 15,
                           ),
                           Text(
                             'Rain',
@@ -92,16 +98,26 @@ class _WeatherScreenState extends State<WeatherScreen> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  HourlyForcastItem(),
-                  HourlyForcastItem(),
-                  HourlyForcastItem(),
-                  HourlyForcastItem(),
-                  HourlyForcastItem(),
-                  HourlyForcastItem(),
-                  HourlyForcastItem(),
-                  HourlyForcastItem(),
-                  HourlyForcastItem(),
-                  HourlyForcastItem(),
+                  HourlyForcastItem(
+                      time: "10:00",
+                      weatherConditionIcon: Icons.cloud,
+                      weatherConditionText: "Cloudy"),
+                  HourlyForcastItem(
+                      time: "11:00",
+                      weatherConditionIcon: Icons.cloudy_snowing,
+                      weatherConditionText: "Rain"),
+                  HourlyForcastItem(
+                      time: "12:00",
+                      weatherConditionIcon: Icons.sunny,
+                      weatherConditionText: "Sunny"),
+                  HourlyForcastItem(
+                      time: "13:00",
+                      weatherConditionIcon: Icons.sunny_snowing,
+                      weatherConditionText: "Sunny Snowing"),
+                  HourlyForcastItem(
+                      time: "14:00",
+                      weatherConditionIcon: Icons.cloud,
+                      weatherConditionText: "Cloudy"),
                 ],
               ),
             ),
@@ -127,7 +143,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     label: "Wind Speed",
                     value: "19.8"),
                 AdditionalInfo(
-                    icon: Icons.water_drop_outlined,
+                    icon: Icons.roofing_sharp,
                     label: "Pressure",
                     value: "1006"),
               ],
