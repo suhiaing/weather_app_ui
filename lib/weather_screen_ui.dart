@@ -101,23 +101,23 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   HourlyForcastItem(
                       time: "10:00",
                       weatherConditionIcon: Icons.cloud,
-                      weatherConditionText: "Cloudy"),
+                      weatherConditionTemperature: "245.7K"),
                   HourlyForcastItem(
                       time: "11:00",
                       weatherConditionIcon: Icons.cloudy_snowing,
-                      weatherConditionText: "Rain"),
+                      weatherConditionTemperature: "397.8K"),
                   HourlyForcastItem(
                       time: "12:00",
                       weatherConditionIcon: Icons.sunny,
-                      weatherConditionText: "Sunny"),
+                      weatherConditionTemperature: "365K"),
                   HourlyForcastItem(
                       time: "13:00",
-                      weatherConditionIcon: Icons.sunny_snowing,
-                      weatherConditionText: "Sunny Snowing"),
+                      weatherConditionIcon: Icons.sunny,
+                      weatherConditionTemperature: "345.8K"),
                   HourlyForcastItem(
                       time: "14:00",
                       weatherConditionIcon: Icons.cloud,
-                      weatherConditionText: "Cloudy"),
+                      weatherConditionTemperature: "294.87K"),
                 ],
               ),
             ),

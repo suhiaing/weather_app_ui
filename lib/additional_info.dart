@@ -14,7 +14,6 @@ class AdditionalInfo extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: SizedBox(
-          width: 100,
           child: Column(
             children: [
               Icon(

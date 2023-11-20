@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class HourlyForcastItem extends StatelessWidget {
   final String? time;
   final IconData? weatherConditionIcon;
-  final String? weatherConditionText;
+  final String? weatherConditionTemperature;
 
   const HourlyForcastItem(
       {super.key,
       required this.time,
       required this.weatherConditionIcon,
-      required this.weatherConditionText});
+      required this.weatherConditionTemperature});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class HourlyForcastItem extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                weatherConditionText!,
+                weatherConditionTemperature!,
                 style: const TextStyle(
                   fontSize: 13,
                 ),
