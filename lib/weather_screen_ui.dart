@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'hourly_forcast_item.dart';
+import 'additional_info.dart';
 
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
@@ -114,7 +115,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             const SizedBox(
               height: 20,
             ),
-            const LastWidget()
+            const AdditionalInfo()
           ],
         ),
       ),
