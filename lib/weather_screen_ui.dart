@@ -22,6 +22,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.refresh_rounded))
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(100, 20, 100, 0),
