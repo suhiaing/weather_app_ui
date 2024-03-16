@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'hourly_forcast_item.dart';
 import 'additional_info.dart';
+import 'package:http/http.dart' as http;
 
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
@@ -11,6 +12,19 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
+  @override
+  void initState() {
+    super.initState();
+    getAPI();
+  }
+
+  Future<void> getAPI() async {
+    final Uri uri = Uri.parse(
+        "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=dd169bc21a42fb3c3bfbdb12a9ec0717");
+    final res = await http.get(uri);
+    print(res.body);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +37,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
           ),
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.refresh_rounded))
+          GestureDetector(
+            onTap: () {},
+            child: const Icon(Icons.refresh),
+          )
         ],
       ),
       body: Padding(
@@ -48,6 +65,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   borderRadius: BorderRadius.circular(16),
                   child: BackdropFilter(
                     //what effect 3D shape
+                    //blur the bg
                     filter: ImageFilter.blur(
                       sigmaX: 10,
                       sigmaY: 10,
@@ -58,21 +76,21 @@ class _WeatherScreenState extends State<WeatherScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
-                            '300.06K',
+                            '300.06 K',
                             style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           SizedBox(
-                            height: 15,
+                            height: 18,
                           ),
                           Icon(
                             Icons.cloud,
                             size: 64,
                           ),
                           SizedBox(
-                            height: 15,
+                            height: 18,
                           ),
                           Text(
                             'Rain',
@@ -142,11 +160,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     label: "Humdity",
                     value: "91"),
                 AdditionalInfo(
-                    icon: Icons.wind_power_sharp,
-                    label: "Wind Speed",
-                    value: "19.8"),
+                    icon: Icons.air, label: "Wind Speed", value: "19.8"),
                 AdditionalInfo(
-                    icon: Icons.roofing_sharp,
+                    icon: Icons.beach_access_sharp,
                     label: "Pressure",
                     value: "1006"),
               ],
