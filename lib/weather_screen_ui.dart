@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'hourly_forcast_item.dart';
@@ -17,16 +18,35 @@ class _WeatherScreenState extends State<WeatherScreen> {
     super.initState();
     getAPI();
   }
+/*1.consturcture 
+  2.initState
+  3.fn called (async ဖြစ်တဲ့အတွက် အောက်ကဟာတွေ ဆက်ခေါ်သွားပြီး*/
 
+  double temp = 0.0;
   Future<void> getAPI() async {
-    final Uri uri = Uri.parse(
-        "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=dd169bc21a42fb3c3bfbdb12a9ec0717");
-    final res = await http.get(uri);
-    print(res.body);
+    print("fn called");
+    try {
+      final Uri uri = Uri.parse(
+          "https://api.openweathermap.org/data/2.5/forecast?q=London,uk&APPID=dd169bc21a42fb3c3bfbdb12a9ec0717");
+      final res = await http.get(uri);
+      final data = jsonDecode(res.body);
+
+      if (data["cod"] != "200") {
+        throw data["message"];
+      } else {
+        setState(() {
+          temp = data["list"][0]["main"]["temp"];
+        });
+      }
+    } catch (e) {
+      throw "Unexpected error occured!";
+    }
+    print("fn ended");
   }
 
   @override
   Widget build(BuildContext context) {
+    print("build context");
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -38,7 +58,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
         ),
         actions: [
           GestureDetector(
-            onTap: () {},
+            onTap: getAPI,
             child: const Icon(Icons.refresh),
           )
         ],
@@ -70,29 +90,29 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       sigmaX: 10,
                       sigmaY: 10,
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(16.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
-                            '300.06 K',
-                            style: TextStyle(
+                            "$temp K",
+                            style: const TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 18,
                           ),
-                          Icon(
+                          const Icon(
                             Icons.cloud,
                             size: 64,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 18,
                           ),
-                          Text(
+                          const Text(
                             'Rain',
                             style: TextStyle(
                               fontSize: 20,
