@@ -25,7 +25,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   Future<Map<String, dynamic>> getAPI() async {
     try {
       final Uri uri = Uri.parse(
-          "https://api.openweathermap.org/data/2.5/forecast?q=London,uk&APPID=dd169bc21a42fb3c3bfbdb12a9ec0717");
+          "https://api.openweathermap.org/data/2.5/forecast?q=Tachileik,mm&APPID=dd169bc21a42fb3c3bfbdb12a9ec0717");
       final res = await http.get(uri);
       final data = jsonDecode(res.body);
 
@@ -77,9 +77,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
             );
           }
           final Map<String, dynamic> data = snapshot.data!;
-          final double currentTemp = data['list'][0]['main']['temp'];
+          final currentWeatherData = data['list'][0];
+          final double currentTemp = currentWeatherData['main']['temp'];
           final String currentWeatherCondition =
-              data['list'][0]['weather'][0]['main'];
+              currentWeatherData['weather'][0]['main'];
+          final double currentPressure = currentWeatherData['main']['pressure'];
+          final double currentWindSpeed = currentWeatherData['wind']['speed'];
+          final double currentHumidity = currentWeatherData['main']['humidity'];
 
           return Padding(
             padding: const EdgeInsets.fromLTRB(100, 20, 100, 0),
@@ -123,15 +127,18 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               const SizedBox(
                                 height: 18,
                               ),
-                              const Icon(
-                                Icons.cloud,
+                              Icon(
+                                currentWeatherCondition == 'Clouds' ||
+                                        currentWeatherCondition == 'Rain'
+                                    ? Icons.cloud
+                                    : Icons.sunny,
                                 size: 64,
                               ),
                               const SizedBox(
                                 height: 18,
                               ),
                               Text(
-                                '$currentWeatherCondition',
+                                currentWeatherCondition,
                                 style: const TextStyle(
                                   fontSize: 20,
                                 ),
@@ -190,19 +197,21 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     AdditionalInfo(
                         icon: Icons.water_drop_outlined,
                         label: "Humdity",
-                        value: "91"),
+                        value: currentHumidity.toString()),
                     AdditionalInfo(
-                        icon: Icons.air, label: "Wind Speed", value: "19.8"),
+                        icon: Icons.air,
+                        label: "Wind Speed",
+                        value: currentWindSpeed.toString()),
                     AdditionalInfo(
                         icon: Icons.beach_access_sharp,
                         label: "Pressure",
-                        value: "1006"),
+                        value: currentPressure.toString()),
                   ],
                 )
               ],
