@@ -39,6 +39,38 @@ class _WeatherScreenState extends State<WeatherScreen> {
     }
   }
 
+  List<Map<String, dynamic>> hourlyforecast(dataForHourlyForecast) {
+    List<Map<String, dynamic>> hourlyforecast = [];
+    for (int i = 1; i < 6; i++) {
+      Map<String, dynamic> common = dataForHourlyForecast['list'][i];
+      print("$common \n");
+      String hourRaw = common['dt_txt'];
+      String hour = hourRaw.substring(11);
+      String hourlyTemp = common['main']['temp'].toString();
+      String hourlyWeatherCondition = common['weather'][0]['main'];
+      Map<String, dynamic> hourlyforecastRaw = {
+        'hour': hour,
+        'icon': Icon(
+          hourlyWeatherCondition == 'Clouds' || hourlyWeatherCondition == 'Rain'
+              ? Icons.cloud
+              : Icons.sunny,
+        ),
+        'temp': hourlyTemp
+      };
+      hourlyforecast.add(hourlyforecastRaw);
+    }
+    print("Hi it's hourlyforecast $hourlyforecast");
+
+    return hourlyforecast;
+  }
+
+  List<Map<String, dynamic>> hourlyforecastItems = [];
+  @override
+  void setState(VoidCallback fn) {
+    hourlyforecastItems = hourlyforecast();
+    super.setState(fn);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,6 +116,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
           final double currentPressure = currentWeatherData['main']['pressure'];
           final double currentWindSpeed = currentWeatherData['wind']['speed'];
           final double currentHumidity = currentWeatherData['main']['humidity'];
+          final String todayRaw = currentWeatherData["dt_txt"];
+          final String today = todayRaw.substring(0, 10);
 
           return Padding(
             padding: const EdgeInsets.fromLTRB(100, 20, 100, 0),
@@ -120,7 +154,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               Text(
                                 "$currentTemp K",
                                 style: const TextStyle(
-                                  fontSize: 28,
+                                  fontSize: 25,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -153,9 +187,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text(
-                  "Weather Forecast",
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                Text(
+                  "$today   Hourly Weather Forecast",
+                  style: const TextStyle(
+                      fontSize: 28, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
                   height: 20,
@@ -165,25 +200,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   child: Row(
                     children: [
                       HourlyForcastItem(
-                          time: "10:00",
+                          time: '10:00',
                           weatherConditionIcon: Icons.cloud,
-                          weatherConditionTemperature: "245.7K"),
-                      HourlyForcastItem(
-                          time: "11:00",
-                          weatherConditionIcon: Icons.cloudy_snowing,
-                          weatherConditionTemperature: "397.8K"),
-                      HourlyForcastItem(
-                          time: "12:00",
-                          weatherConditionIcon: Icons.sunny,
-                          weatherConditionTemperature: "365K"),
-                      HourlyForcastItem(
-                          time: "13:00",
-                          weatherConditionIcon: Icons.sunny,
-                          weatherConditionTemperature: "345.8K"),
-                      HourlyForcastItem(
-                          time: "14:00",
-                          weatherConditionIcon: Icons.cloud,
-                          weatherConditionTemperature: "294.87K"),
+                          weatherConditionTemperature: '234K'),
                     ],
                   ),
                 ),
@@ -192,7 +211,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 ),
                 const Text(
                   "Additional Information",
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
                   height: 20,
