@@ -6,12 +6,13 @@ class HourlyForcastItem extends StatelessWidget {
   final String? weatherConditionTemperature;
   final String? todayDate;
 
-  const HourlyForcastItem(
-      {super.key,
-      required this.time,
-      required this.weatherConditionIcon,
-      required this.weatherConditionTemperature,
-      required this.todayDate});
+  const HourlyForcastItem({
+    super.key,
+    required this.todayDate,
+    required this.time,
+    required this.weatherConditionIcon,
+    required this.weatherConditionTemperature,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class HourlyForcastItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Container(
-          width: 110,
+          width: 120,
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
           child: Column(
             children: [

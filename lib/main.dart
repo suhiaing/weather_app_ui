@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(
+      theme: ThemeData.light(
           useMaterial3: true), //not like color..this changes in every pages
       home: const WeatherScreen(),
     );

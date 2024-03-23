@@ -13,39 +13,12 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   //getAPI(); မထည့်တာပဲကောင်းတယ် ဘာလုပ်မှာတုန်း နှစ်ခါကြီးခေါ်ပြီးတော့
-  // }
-/*1.consturcture 
-  2.initState
-  3.fn called (async ဖြစ်တဲ့အတွက် အောက်ကဟာတွေ ဆက်ခေါ်သွားပြီး*/
-
-//   List<Map<String, dynamic>> hourlyforecast(dataForHourlyForecast) {
-//     List<Map<String, dynamic>> hourlyforecast = [];
-//     for (int i = 1; i < 6; i++) {
-//       Map<String, dynamic> common = dataForHourlyForecast['list'][i];
-//       String hourRaw = common['dt_txt'];
-//       String hour = hourRaw.substring(11);
-//       String hourlyTemp = common['main']['temp'].toString();
-//       String hourlyWeatherCondition = common['weather'][0]['main'];
-//       Map<String, dynamic> hourlyforecastRaw = {
-//         'hour': hour,
-//         'icon': hourlyWeatherCondition == 'Clouds' ||
-//                 hourlyWeatherCondition == 'Rain'
-//             ? Icons.cloud
-//             : Icons.sunny,
-//         'temp': hourlyTemp
-//       };
-// //data['list'][i+1]['dt_txt'].substring(11)
-// //data['list'][i+1]['main']['temp'].toString()
-//       hourlyforecast.add(hourlyforecastRaw);
-//     }
-//     print("Hi it's hourlyforecast $hourlyforecast");
-
-//     return hourlyforecast;
-//   }
+  late Future<Map<String, dynamic>> weather;
+  @override
+  void initState() {
+    super.initState();
+    weather = getAPI();
+  }
 
   Future<Map<String, dynamic>> getAPI() async {
     try {
@@ -77,13 +50,17 @@ class _WeatherScreenState extends State<WeatherScreen> {
         ),
         actions: [
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              setState(() {
+                weather = getAPI();
+              });
+            },
             child: const Icon(Icons.refresh),
           )
         ],
       ),
       body: FutureBuilder(
-        future: getAPI(),
+        future: weather,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -185,26 +162,31 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      for (int i = 0; i < 5; i++)
-                        HourlyForcastItem(
-                            todayDate:
-                                currentWeatherData["dt_txt"].substring(0, 10),
-                            time: data['list'][i + 1]['dt_txt'].substring(11),
-                            weatherConditionIcon: data['list'][i]['weather'][0]
-                                            ['main'] ==
-                                        'Clouds' ||
-                                    data['list'][i]['weather'][0]['main'] ==
-                                        'Rain'
-                                ? Icons.cloud
-                                : Icons.sunny,
-                            weatherConditionTemperature:
-                                data['list'][i + 1]['main']['temp'].toString()),
-                    ],
-                  ),
+                SizedBox(
+                  height: 180,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        final Map<String, dynamic> common =
+                            data['list'][index + 1];
+                        final String hourRaw = common['dt_txt'];
+                        final String hour = hourRaw.substring(11, 16);
+                        final String todayDate = hourRaw.substring(0, 10);
+                        final String hourlyTemp =
+                            common['main']['temp'].toString();
+                        final String hourlyWeatherCondition =
+                            common['weather'][0]['main'];
+                        return HourlyForcastItem(
+                            todayDate: todayDate,
+                            time: hour,
+                            weatherConditionIcon:
+                                hourlyWeatherCondition == 'Clouds' ||
+                                        hourlyWeatherCondition == 'Rain'
+                                    ? Icons.cloud
+                                    : Icons.sunny,
+                            weatherConditionTemperature: hourlyTemp);
+                      }),
                 ),
                 const SizedBox(
                   height: 20,
@@ -220,7 +202,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     AdditionalInfo(
-                        icon: Icons.water_drop_outlined,
+                        icon: Icons.water_drop,
                         label: "Humdity",
                         value: currentHumidity.toString()),
                     AdditionalInfo(
@@ -228,7 +210,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                         label: "Wind Speed",
                         value: currentWindSpeed.toString()),
                     AdditionalInfo(
-                        icon: Icons.beach_access_sharp,
+                        icon: Icons.beach_access,
                         label: "Pressure",
                         value: currentPressure.toString()),
                   ],
