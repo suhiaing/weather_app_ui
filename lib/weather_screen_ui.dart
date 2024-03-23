@@ -22,6 +22,31 @@ class _WeatherScreenState extends State<WeatherScreen> {
   2.initState
   3.fn called (async ဖြစ်တဲ့အတွက် အောက်ကဟာတွေ ဆက်ခေါ်သွားပြီး*/
 
+//   List<Map<String, dynamic>> hourlyforecast(dataForHourlyForecast) {
+//     List<Map<String, dynamic>> hourlyforecast = [];
+//     for (int i = 1; i < 6; i++) {
+//       Map<String, dynamic> common = dataForHourlyForecast['list'][i];
+//       String hourRaw = common['dt_txt'];
+//       String hour = hourRaw.substring(11);
+//       String hourlyTemp = common['main']['temp'].toString();
+//       String hourlyWeatherCondition = common['weather'][0]['main'];
+//       Map<String, dynamic> hourlyforecastRaw = {
+//         'hour': hour,
+//         'icon': hourlyWeatherCondition == 'Clouds' ||
+//                 hourlyWeatherCondition == 'Rain'
+//             ? Icons.cloud
+//             : Icons.sunny,
+//         'temp': hourlyTemp
+//       };
+// //data['list'][i+1]['dt_txt'].substring(11)
+// //data['list'][i+1]['main']['temp'].toString()
+//       hourlyforecast.add(hourlyforecastRaw);
+//     }
+//     print("Hi it's hourlyforecast $hourlyforecast");
+
+//     return hourlyforecast;
+//   }
+
   Future<Map<String, dynamic>> getAPI() async {
     try {
       final Uri uri = Uri.parse(
@@ -37,38 +62,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
     } catch (e) {
       throw "Sorry...An unexpected error occured!";
     }
-  }
-
-  List<Map<String, dynamic>> hourlyforecast(dataForHourlyForecast) {
-    List<Map<String, dynamic>> hourlyforecast = [];
-    for (int i = 1; i < 6; i++) {
-      Map<String, dynamic> common = dataForHourlyForecast['list'][i];
-      print("$common \n");
-      String hourRaw = common['dt_txt'];
-      String hour = hourRaw.substring(11);
-      String hourlyTemp = common['main']['temp'].toString();
-      String hourlyWeatherCondition = common['weather'][0]['main'];
-      Map<String, dynamic> hourlyforecastRaw = {
-        'hour': hour,
-        'icon': Icon(
-          hourlyWeatherCondition == 'Clouds' || hourlyWeatherCondition == 'Rain'
-              ? Icons.cloud
-              : Icons.sunny,
-        ),
-        'temp': hourlyTemp
-      };
-      hourlyforecast.add(hourlyforecastRaw);
-    }
-    print("Hi it's hourlyforecast $hourlyforecast");
-
-    return hourlyforecast;
-  }
-
-  List<Map<String, dynamic>> hourlyforecastItems = [];
-  @override
-  void setState(VoidCallback fn) {
-    hourlyforecastItems = hourlyforecast();
-    super.setState(fn);
   }
 
   @override
@@ -116,8 +109,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
           final double currentPressure = currentWeatherData['main']['pressure'];
           final double currentWindSpeed = currentWeatherData['wind']['speed'];
           final double currentHumidity = currentWeatherData['main']['humidity'];
-          final String todayRaw = currentWeatherData["dt_txt"];
-          final String today = todayRaw.substring(0, 10);
 
           return Padding(
             padding: const EdgeInsets.fromLTRB(100, 20, 100, 0),
@@ -187,22 +178,31 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                Text(
-                  "$today   Hourly Weather Forecast",
-                  style: const TextStyle(
-                      fontSize: 28, fontWeight: FontWeight.bold),
+                const Text(
+                  "Weather Forecast",
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                const SingleChildScrollView(
+                SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      HourlyForcastItem(
-                          time: '10:00',
-                          weatherConditionIcon: Icons.cloud,
-                          weatherConditionTemperature: '234K'),
+                      for (int i = 0; i < 5; i++)
+                        HourlyForcastItem(
+                            todayDate:
+                                currentWeatherData["dt_txt"].substring(0, 10),
+                            time: data['list'][i + 1]['dt_txt'].substring(11),
+                            weatherConditionIcon: data['list'][i]['weather'][0]
+                                            ['main'] ==
+                                        'Clouds' ||
+                                    data['list'][i]['weather'][0]['main'] ==
+                                        'Rain'
+                                ? Icons.cloud
+                                : Icons.sunny,
+                            weatherConditionTemperature:
+                                data['list'][i + 1]['main']['temp'].toString()),
                     ],
                   ),
                 ),
